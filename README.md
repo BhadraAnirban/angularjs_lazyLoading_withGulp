@@ -3,9 +3,9 @@
 
 ## bower install oclazyload or npm install oclazyload
 
-                ##   Now in the app in the module config, we will generate a list of objects with name and js file list, and fed it to the $ocLazyLoadProvider's config.
+## Now in the app in the module config, we will generate a list of objects with name and js file list, and fed it to the $ocLazyLoadProvider's config.
 
-                ## angular
+                angular
                   .module('LazyLoadModule', ['oc.lazyLoad', ...])
                   .config(ocLazyLoading);
 
@@ -18,10 +18,10 @@
                     });
                     lazyObject.push(lazyItem);
                   });
-                ## $ocLazyLoadProvider.config({
+                $ocLazyLoadProvider.config({
                     'debug': true,
                     'events': true,
-                ##     'modules': lazyObject,
+                     'modules': lazyObject,
                   });
                 };
 
@@ -32,10 +32,10 @@
                 .state('home', {
                   url: '/',
                   template: '...',
-              ## resolve: {
-                ## loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                ## return $ocLazyLoad.load('lazyHome'); // Resolve promise and load before view
-              ## }]
+               resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                 return $ocLazyLoad.load('lazyHome'); // Resolve promise and load before view
+               }]
                   }
                 })
                 .state('kolkata', {
