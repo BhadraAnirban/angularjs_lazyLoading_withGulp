@@ -47,7 +47,7 @@ gulp.task('lazyLoading', function () {
 
 });
 
-function injectOption(startTag){
+## function injectOption(startTag){
   return {
     starttag: startTag,
     endtag: '\']',
@@ -56,7 +56,7 @@ function injectOption(startTag){
   }
 };
 
-function getLazyScript(filePath, concatTo){
+## function getLazyScript(filePath, concatTo){
   return gulp.src(path.join(conf.paths.src, filePath))
   .pipe($.flatten())
   .pipe(concat(concatTo))
