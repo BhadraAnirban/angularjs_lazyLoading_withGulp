@@ -4,7 +4,7 @@
 
 ## The lazy.js file will look like this, where we will inject the minified and uglified controller specific generated js files
 
-## var LAZYLOADING_CONSTANT = [
+var LAZYLOADING_CONSTANT = [
       {
           name : 'lazy1',
           /*inject:lazy1*/ files: ['']
