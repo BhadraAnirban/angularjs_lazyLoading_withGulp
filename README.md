@@ -1,5 +1,65 @@
 # angularjs_lazyLoading_withGulp
 
+
+## bower install oclazyload or npm install oclazyload
+
+                ##   Now in the app in the module config, we will generate a list of objects with name and js file list, and fed it to the $ocLazyLoadProvider's config.
+
+                ## angular
+                  .module('LazyLoadModule', ['oc.lazyLoad', ...])
+                  .config(ocLazyLoading);
+
+                  function ocLazyLoading($ocLazyLoadProvider){
+                  var lazyObject = [];
+                  angular.forEach(LAZYLOADING_CONSTANT, function(item){
+                    var lazyItem = {name: item.name, files: []};
+                    angular.forEach(item.files, function(file){
+                      lazyItem.files.push(file.split('dist/')[1].split('"></script>')[0]);
+                    });
+                    lazyObject.push(lazyItem);
+                  });
+                ## $ocLazyLoadProvider.config({
+                    'debug': true,
+                    'events': true,
+                ##     'modules': lazyObject,
+                  });
+                };
+
+
+              # In the route -
+
+                $stateProvider
+                .state('home', {
+                  url: '/',
+                  template: '...',
+              ## resolve: {
+                ## loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                ## return $ocLazyLoad.load('lazyHome'); // Resolve promise and load before view
+              ## }]
+                  }
+                })
+                .state('kolkata', {
+        url: '/kolkata'
+        , resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load('lazy1'); // Resolve promise and load before view
+            }]
+        }
+      })
+      .state('delhi', {
+        , resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load('lazy2'); // Resolve promise and load before view
+            }]
+        }
+      });
+
+
+## //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 ## Create a task which will generate a lazy.js file inside src, which will contain the task generated lazy loading js file paths to ingect in the routing.
 
 ## The lazy.js file will look like this, where we will inject the minified and uglified controller specific generated js files
@@ -47,7 +107,7 @@ gulp.task('lazyLoading', function () {
 
 });
 
-## function injectOption(startTag){
+function injectOption(startTag){
   return {
     starttag: startTag,
     endtag: '\']',
@@ -56,7 +116,7 @@ gulp.task('lazyLoading', function () {
   }
 };
 
-## function getLazyScript(filePath, concatTo){
+function getLazyScript(filePath, concatTo){
   return gulp.src(path.join(conf.paths.src, filePath))
   .pipe($.flatten())
   .pipe(concat(concatTo))
@@ -83,61 +143,4 @@ gulp.src(path.join(conf.paths.src, '/'+index_file+'.html'))
 
 Execute the gulp task while build -
 gulp.task('build', ['sass', 'lazyLoading']);
-
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-## bower install oclazyload or npm install oclazyload
-
-                ##   Now in the app in the module config, we will generate a list of objects with name and js file list, and fed it to the $ocLazyLoadProvider's config.
-
-                ##   angular
-                  .module('LazyLoadModule', ['oc.lazyLoad', ...])
-                  .config(ocLazyLoading);
-
-                  function ocLazyLoading($ocLazyLoadProvider){
-                  var lazyObject = [];
-                  angular.forEach(LAZYLOADING_CONSTANT, function(item){
-                    var lazyItem = {name: item.name, files: []};
-                    angular.forEach(item.files, function(file){
-                      lazyItem.files.push(file.split('dist/')[1].split('"></script>')[0]);
-                    });
-                    lazyObject.push(lazyItem);
-                  });
-                ##   $ocLazyLoadProvider.config({
-                    'debug': true,
-                    'events': true,
-                ##     'modules': lazyObject,
-                  });
-                };
-
-
-              #  In the route -
-
-                $stateProvider
-                .state('home', {
-                  url: '/',
-                  template: '...',
-              ##     resolve: {
-              ##         loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-              ##             return $ocLazyLoad.load('lazyHome'); // Resolve promise and load before view
-              ##         }]
-                  }
-                })
-                .state('kolkata', {
-        url: '/kolkata'
-        , resolve: {
-            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load('lazy1'); // Resolve promise and load before view
-            }]
-        }
-      })
-      .state('delhi', {
-        , resolve: {
-            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load('lazy2'); // Resolve promise and load before view
-            }]
-        }
-      });
-
-
 
